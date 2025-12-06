@@ -17,5 +17,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "tajweed-parser"
+rootProject.name = "kmp-tajweed-parser"
 include(":tajweed-parser")

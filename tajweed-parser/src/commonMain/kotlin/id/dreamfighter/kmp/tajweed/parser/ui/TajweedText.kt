@@ -2,57 +2,66 @@ package id.dreamfighter.kmp.tajweed.parser.ui
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import id.dreamfighter.kmp.tajweed.parser.TajweedType
-import id.dreamfighter.kmp.tajweed.parser.TajweedParser
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import id.dreamfighter.kmp.tajweed.parser.MetaColor
+import id.dreamfighter.kmp.tajweed.parser.TajweedParser.parse
+import id.dreamfighter.kmp.tajweed.parser.toComposeColor
+import id.dreamfighter.kmp.tajweed_parser.generated.resources.Res
+import id.dreamfighter.kmp.tajweed_parser.generated.resources.kitab_regular
+import org.jetbrains.compose.resources.Font
 
+// IMPORTANT: Define your custom font (Kitab-Regular) if it exists in your project's assets/res/font
+// For this example, we'll use a placeholder for the custom font definition.
+
+
+/**
+ * The main Composable function equivalent to the SwiftUI TajweedColors View.
+ * It parses the text and displays it with color annotations.
+ */
 @Composable
-fun TajweedText(rawAyahText: String) {
-    val tokens = TajweedParser.parse(rawAyahText)
+fun TajweedText(
+    text: String,
+    modifier: Modifier = Modifier,
+    metaColor: MetaColor = MetaColor(),
+    // Replace with your actual custom font definition if available
+    fontFamily: FontFamily = FontFamily.Default,
+    fontSize: Int = 24
+) {
+    val kitabFontFamily = FontFamily(Font(Res.font.kitab_regular, FontWeight.Normal, FontStyle.Normal)) // Uncomment and fix R.font
+    // 1. Process the text
+    val string = text
+    val textsAyah = parse(rawAyah = string, metaColor = metaColor)
 
-    val styledText = buildAnnotatedString {
-        tokens.forEach { token ->
-            val color = getTajweedColor(token.type)
-            withStyle(style = SpanStyle(color = color)) {
-                append(token.text)
-            }
+    // 2. Build the AnnotatedString
+    val annotatedText = buildAnnotatedString {
+        for (ayah in textsAyah) {
+            println(ayah.color)
+            val color = ayah.color.toComposeColor()
+
+            // Append the text segment with the specific color style
+            append(ayah.text)
+            addStyle(
+                style = SpanStyle(color = color),
+                start = length - ayah.text.length,
+                end = length
+            )
         }
     }
 
-    Text(text = styledText)
-}
-
-// Default colors matching the original library (approximate values)
-fun getTajweedColor(type: TajweedType): Color {
-    return when (type) {
-        TajweedType.HAMZAT_WASL,
-        TajweedType.SILENT,
-        TajweedType.LAM_SHAMSIYYAH -> Color(0xFFAAAAAA) // Grey
-
-        TajweedType.MADDA_NORMAL -> Color(0xFF537FFF) // Light Blue
-        TajweedType.MADDA_PERMISSIBLE -> Color(0xFF4050FF) // Blue
-        TajweedType.MADDA_NECESSARY -> Color(0xFF000EBC) // Dark Blue
-        TajweedType.MADDA_OBLIGATORY -> Color(0xFF2144C1) // Deep Blue
-
-        TajweedType.QALQALAH -> Color(0xFFDD0008) // Red
-
-        TajweedType.IKHFA_SHAFAWI -> Color(0xFFD500B7) // Pink/Purple
-        TajweedType.IKHFA -> Color(0xFF9400A8) // Purple
-
-        TajweedType.IDGHAM_SHAFAWI -> Color(0xFF58B800) // Lime Green
-        TajweedType.IDGHAM_WITH_GHUNNAH -> Color(0xFF169777) // Teal
-        TajweedType.IDGHAM_WITHOUT_GHUNNAH -> Color(0xFF169200) // Green
-
-        TajweedType.IQLAB -> Color(0xFF26BFFD) // Cyan
-
-        TajweedType.GHUNNAH -> Color(0xFFFF7E1E) // Orange
-
-        TajweedType.IDGHAM_MUTAJANISAYN,
-        TajweedType.IDGHAM_MUTAQARIBAYN -> Color(0xFFA1A1A1) // Greyish
-
-        TajweedType.NORMAL -> Color.Black // Or your theme's onSurface color
-    }
+    // 3. Display the result
+    Text(
+        text = annotatedText,
+        modifier = modifier,
+        style = TextStyle(
+            fontSize = fontSize.sp,
+            fontFamily = kitabFontFamily // Apply the custom font family
+        )
+    )
 }

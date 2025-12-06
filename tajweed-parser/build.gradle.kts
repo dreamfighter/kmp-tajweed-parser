@@ -43,12 +43,11 @@ kotlin {
         }
     }
 
-    /*
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    linuxX64()
-     */
+    //linuxX64()
 
     sourceSets {
         androidMain.dependencies {
@@ -118,7 +117,7 @@ kotlin {
 }
 
 android {
-    namespace = "id.dreamfighter.kmp.tajweed.parser"
+    namespace = "id.dreamfighter.kmp"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
