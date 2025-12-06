@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.sp
 import id.dreamfighter.kmp.tajweed.parser.MetaColor
 import id.dreamfighter.kmp.tajweed.parser.TajweedParser.parse
 import id.dreamfighter.kmp.tajweed.parser.toComposeColor
-import id.dreamfighter.kmp.tajweed_parser.generated.resources.Res
-import id.dreamfighter.kmp.tajweed_parser.generated.resources.kitab_regular
+import io.github.dreamfighter.tajweed_parser.generated.resources.Res
+import io.github.dreamfighter.tajweed_parser.generated.resources.kitab_regular
 import org.jetbrains.compose.resources.Font
 
 // IMPORTANT: Define your custom font (Kitab-Regular) if it exists in your project's assets/res/font

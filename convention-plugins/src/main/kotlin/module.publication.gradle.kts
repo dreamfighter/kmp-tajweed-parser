@@ -36,7 +36,7 @@ publishing {
         pom {
             name.set("Kotlin KMP Json Layout Compose")
             description.set("Dummy library to test deployment to Maven Central")
-            url.set("https://github.com/dreamfighter/kmp-library-template")
+            url.set("https://github.com/dreamfighter/kmp-tajweed-parser")
 
             licenses {
                 license {
@@ -53,15 +53,17 @@ publishing {
                 }
             }
             scm {
-                url.set("https://github.com/dreamfighter/kmp-library-template")
+                url.set("https://github.com/dreamfighter/kmp-tajweed-parser")
             }
         }
     }
 }
 
 signing {
-    if (project.hasProperty("signing.gnupg.keyName")) {
-        useGpgCmd()
-        sign(publishing.publications)
-    }
+    // Find all Maven publications and sign them
+    useGpgCmd()
+    //val secretKeyFile = System.getenv("HOME") + "/.gnupg/secring.gpg"
+    // Use an absolute path string directly
+    //useInMemoryPgpKeys(localProperties["gpg.signing.id"].toString(), localProperties["gpg.signing.secret"].toString(), project.file(secretKeyFile).readBytes())
+    sign(publishing.publications)
 }
