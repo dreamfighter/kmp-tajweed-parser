@@ -10,23 +10,20 @@ Tajweed Quran Parser for KMP bassed on [quran-tajweed](http://api.alquran.cloud/
 ## Setup
 
 #### Step 1
-add to your project Podfile
-```pod
-pod 'TajweedParser'
+add to your project build.gradle
+```groovy
+implementation "io.github.dreamfighter:tajweed-parser:1.0.1"
 ```
 
 #### Usage
 
 The library is based on https://alquran.cloud/api, on edition `quran-tajweed`.Once you have `quran-tajweed` inside the app you can call `TajweedColorText(text:string)` to return a [Text](https://developer.android.com/reference/android/text/Spannable) text. Use TextView widgets with Spannable text.
 
-```swift
-val string = "بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ي]مِ"
-TajweedText(text:string)
-```
-
 You can also change the colors by creating a class of `MetaColors` and overriding the color properties:
 ```Kotlin
-val metaColor = MetaColor(hsl:"#FF6200EE", ikhafa:"#D50000")
+val string = "بِسْمِ [h:1[ٱ]للَّهِ [h:2[ٱ][l[ل]رَّحْمَ[n[ـٰ]نِ [h:3[ٱ][l[ل]رَّح[p[ي]مِ"
+TajweedText(string)
+val metaColor = MetaColor(hsl = "#FF6200EE", ikhafa = "#D50000")
 TajweedText(string,metaColor)
 ```
 

@@ -3,12 +3,15 @@ package id.dreamfighter.kmp.tajweed.parser
 import androidx.compose.ui.graphics.Color
 
 object TajweedParser {
+    private const val TAJWEED_METAS = "hslnpmqocfwiaudbg"
 
+    fun parseWithoutMetas(rawAyah: String): String {
+        return rawAyah.replace("[]\\[$TAJWEED_METAS:0-9]".toRegex(), "")
+    }
 
     fun parse(rawAyah: String, metaColor: MetaColor): List<TajweedAyah> {
         val datas = mutableListOf<TajweedAyah>()
-        val tajweedMetas = "hslnpmqocfwiaudbg"
-        println("rawayah ($rawAyah) ")
+       // println("rawayah ($rawAyah) ")
 
 
         var splits = mutableListOf<String>()
@@ -19,7 +22,7 @@ object TajweedParser {
         //val aryChar = rawAyah.get(0)
         while (index < rawAyah.length) {
             curr = "${rawAyah[index]}"
-            if (prev == "[" && tajweedMetas.contains(curr)) {
+            if (prev == "[" && TAJWEED_METAS.contains(curr)) {
                 splits.add(temp)
                 splits.add(curr)
                 temp = ""
@@ -32,7 +35,7 @@ object TajweedParser {
                 temp = ""
             } else if (prev != "[") {
                 temp = "$temp$prev"
-                println("curr => $prev")
+                //println("curr => $prev")
             }
 
             prev = curr
@@ -46,8 +49,8 @@ object TajweedParser {
         var metaSpilt: String = ""
         var i: Int = 0
         for (ayahSpilt in splits) {
-            println("ayahSpilt ($ayahSpilt)")
-            if (tajweedMetas.contains(ayahSpilt)) {
+            //println("ayahSpilt ($ayahSpilt)")
+            if (TAJWEED_METAS.contains(ayahSpilt)) {
                 metaSpilt = ayahSpilt
             } else if (!metaSpilt.isEmpty()) {
                 val metaColor = metaToColor(metaSpilt.first(), metaColor)

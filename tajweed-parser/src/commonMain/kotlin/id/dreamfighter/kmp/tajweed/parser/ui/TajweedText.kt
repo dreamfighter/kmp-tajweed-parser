@@ -3,6 +3,7 @@ package id.dreamfighter.kmp.tajweed.parser.ui
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -12,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import id.dreamfighter.kmp.tajweed.parser.MetaColor
 import id.dreamfighter.kmp.tajweed.parser.TajweedParser.parse
+import id.dreamfighter.kmp.tajweed.parser.TajweedParser.parseWithoutMetas
 import id.dreamfighter.kmp.tajweed.parser.toComposeColor
 import io.github.dreamfighter.tajweed_parser.generated.resources.Res
 import io.github.dreamfighter.tajweed_parser.generated.resources.kitab_regular
@@ -31,7 +33,7 @@ fun TajweedText(
     modifier: Modifier = Modifier,
     metaColor: MetaColor = MetaColor(),
     // Replace with your actual custom font definition if available
-    fontFamily: FontFamily = FontFamily.Default,
+    fontFamily: FontFamily? = FontFamily.Default,
     fontSize: Int = 24
 ) {
     val kitabFontFamily = FontFamily(Font(Res.font.kitab_regular, FontWeight.Normal, FontStyle.Normal)) // Uncomment and fix R.font
@@ -42,7 +44,7 @@ fun TajweedText(
     // 2. Build the AnnotatedString
     val annotatedText = buildAnnotatedString {
         for (ayah in textsAyah) {
-            println(ayah.color)
+            //println(ayah.color)
             val color = ayah.color.toComposeColor()
 
             // Append the text segment with the specific color style
@@ -61,7 +63,37 @@ fun TajweedText(
         modifier = modifier,
         style = TextStyle(
             fontSize = fontSize.sp,
-            fontFamily = kitabFontFamily // Apply the custom font family
+            fontFamily = fontFamily ?: kitabFontFamily// Apply the custom font family
+        )
+    )
+}
+
+
+/**
+ * The main Composable function equivalent to the SwiftUI TajweedColors View.
+ * It parses the text and displays it with color annotations.
+ */
+@Composable
+fun TajweedTextWithoutMetas(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color? = Color.Black,
+    // Replace with your actual custom font definition if available
+    fontFamily: FontFamily? = FontFamily.Default,
+    fontSize: Int = 24
+) {
+    val kitabFontFamily = FontFamily(Font(Res.font.kitab_regular, FontWeight.Normal, FontStyle.Normal)) // Uncomment and fix R.font
+    // 1. Process the text
+    val string = text
+    val textsAyah = parseWithoutMetas(rawAyah = string)
+
+    // 3. Display the result
+    Text(
+        text = textsAyah,
+        modifier = modifier,
+        style = TextStyle(
+            fontSize = fontSize.sp,
+            fontFamily = fontFamily ?: kitabFontFamily// Apply the custom font family
         )
     )
 }

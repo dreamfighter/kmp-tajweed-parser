@@ -8,7 +8,7 @@ plugins {
 
 allprojects {
     group = "io.github.dreamfighter"
-    version = "1.0.0"
+    version = "1.0.1"
 }
 
 val localProperties = File(rootDir, "local.properties").inputStream().use {
